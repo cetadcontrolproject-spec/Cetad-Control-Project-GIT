@@ -1,0 +1,11 @@
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.app-view {
+    display: none; /* Oculta todas las vistas por defecto */
+}
+
+.active-view {
+    display: block; /* Muestra solo la vista que tenga esta clase */
+}

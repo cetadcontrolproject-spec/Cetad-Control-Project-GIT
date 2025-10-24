@@ -46,7 +46,33 @@
     </div>
 
 
+        <!-- contenedor de la aplicación -->
 
+    <div id="app container" class="app-view flex h-screen bd-gray-200">
+
+         <!-- menú lateral -->
+<div id="sidebar" class="w-64 bg-gray-800 text-white flex flex-col">
+            <div class="px-4 py-6">
+                <h2 class="text-xl font-semibold">CETAD System</h2>
+            </div>
+            <nav id="sidebar-nav" class="flex-1 px-2 space-y-1">
+                <a href="#" class="block px-4 py-2 rounded-md bg-gray-900">Dashboard</a>
+                <a href="#" class="block px-4 py-2 rounded-md hover:bg-gray-700">Pacientes</a>
+                <a href="#" class="block px-4 py-2 rounded-md hover:bg-gray-700">Asistente IA</a>
+            </nav>
+        </div>
+
+        <!-- Contenido Principal -->
+        <main class="flex-1 flex flex-col overflow-hidden">
+            <div class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
+                <!-- El contenido de cada vista (Dashboard, Pacientes, etc.) se cargará aquí -->
+                <h1 class="text-3xl font-semibold text-gray-800">Dashboard</h1>
+                <p class="text-gray-600 mt-2">Bienvenido al sistema de control y registro clínico.</p>
+            </div>
+        </main>
+    </div>
+
+    
 
     <!-- Aquí escribiremos la estructura de nuestra aplicación -->
 
