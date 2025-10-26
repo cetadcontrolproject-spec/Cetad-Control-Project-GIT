@@ -14,40 +14,11 @@
     <!-- Enlazando nuestra hoja de estilos personalizada -->
     <link rel="stylesheet" href="css/style.css">
 
-    <!-- =================================================== -->
-    <!-- REGLAS DE CSS CRÍTICAS PARA EL CAMBIO DE VISTA -->
-    <!-- Las ponemos aquí para garantizar que siempre se carguen -->
-    <!-- =================================================== -->
-    <style>
-        body {
-            /* Establece la fuente para toda la página */
-            font-family: 'Inter', sans-serif;
-        }
-
-        /* 1. Oculta TODAS las vistas principales por defecto */
-        .app-view {
-            display: none; 
-        }
-
-        /* 2. Muestra el LOGIN como 'flex' para poder centrarlo */
-        /* Solo se aplica si el elemento tiene 'app-view' y 'active-view' */
-        #login-view.active-view {
-            display: flex;
-        }
-
-        /* 3. Muestra el PANEL DE LA APP como 'flex' para el layout */
-        /* Solo se aplica si el elemento tiene 'app-view' y 'active-view' */
-        #app-container.active-view {
-            display: flex;
-        }
-    </style>
-
 </head>
 <body class="bg-gray-100 text-gray-800">
 
     <!-- Pantalla de Login -->
-    <!-- Esta es la 'Vista 1'. Tiene 'active-view' para ser visible al inicio -->
-    <div id="login-view" class="app-view active-view flex items-center justify-center h-screen bg-gray-200">
+    <div id="login-view" class="app-view active-view items-center justify-center h-screen bg-gray-200">
         <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
             
             <!-- Encabezado del formulario -->
@@ -70,19 +41,18 @@
                 <!-- Aquí se mostrarán los errores de login -->
                 <div id="login-error" class="text-red-600 text-sm text-center hidden"></div>
 
-                <div>
-                    <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
-                        Iniciar Sesión
-                    </button>
+                <!-- boton enviar (TU CÓDIGO ACTUALIZADO) -->
+                <div class="flex justify-center">
+                    <button type="submit" class="mt-4 group relative max-w-md flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-black bg-blue-200 hover:bg-blue-400">
+                    Iniciar Sesión </button>
                 </div>
             </form>
 
         </div>
     </div>
 
-    <!-- Contenedor Principal de la App (inicialmente oculto) -->
-    <!-- Esta es la 'Vista 2'. Solo tiene 'app-view' para estar oculta al inicio -->
-    <div id="app-container" class="app-view flex h-screen bg-gray-200">
+    <!-- Contenido Principal de la App (inicialmente oculto) -->
+    <div id="app-container" class="app-view h-screen bg-gray-200">
         <!-- Sidebar (Menú Lateral) -->
         <div id="sidebar" class="w-64 bg-gray-800 text-white flex flex-col">
             <div class="px-4 py-6">
@@ -97,6 +67,16 @@
 
         <!-- Contenido Principal -->
         <main class="flex-1 flex flex-col overflow-hidden">
+            
+            <!-- =================================================== -->
+            <!-- AQUÍ ESTÁ EL BOTÓN DE CERRAR SESIÓN -->
+            <!-- =================================================== -->
+            <header class="bg-white shadow-sm p-4 flex justify-end">
+                <button id="logout-button" class="text-sm font-medium text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md shadow-sm">
+                    Cerrar Sesión
+                </button>
+            </header>
+
             <div class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
                 <!-- El contenido de cada vista (Dashboard, Pacientes, etc.) se cargará aquí -->
                 <h1 class="text-3xl font-semibold text-gray-800">Dashboard</h1>
@@ -109,27 +89,25 @@
     <!-- CONEXIÓN CON FIREBASE (SECCIÓN CRÍTICA) -->
     <!-- =================================================== -->
 
-    <!-- Este es el "paquete" principal de Firebase -->
     <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
-    
-    <!-- Este es el "paquete" para la Autenticación (login) -->
     <script type="module"src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
-
-    <!-- Este es el "paquete" para la Base de Datos (Firestore) -->
     <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
 
-    <!-- Este script inicializa la conexión con TU proyecto -->
     <script type="module">
-        // Importa la función de inicialización
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-        // Importa las funciones que necesitaremos
-        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        
+        // ===============================================================
+        // ¡¡¡IMPORTANTE!!! 
+        // 1. ASEGÚRATE DE IMPORTAR 'signOut' AQUÍ
+        // ===============================================================
+        import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
         import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
-        // Import the functions you need from the SDKs you need
-
-// Your web app's Firebase configuration
-const firebaseConfig = {
+        // ===============================================================
+        // ¡¡¡IMPORTANTE!!! 
+        // 2. PEGA TU CÓDIGO DE CONFIGURACIÓN DE FIREBASE AQUÍ
+        // ===============================================================
+        const firebaseConfig = {
   apiKey: "AIzaSyAUZ2I2HnxFvrS3i7S-aezaYRJNk_GqMag",
   authDomain: "sistema-cetad-fci045.firebaseapp.com",
   projectId: "sistema-cetad-fci045",
@@ -137,16 +115,19 @@ const firebaseConfig = {
   messagingSenderId: "13194984349",
   appId: "1:13194984349:web:7db6926f4bf93857b8cd74"
 };
+      
+        // Inicializa Firebase
+        const app = initializeApp(firebaseConfig);
 
-// Initialize Firebase
-const app = initializeApp(firebaseConfig);
-
-        // Hacemos las herramientas de Firebase "globales" para que main.js las vea
-        // Esto es un atajo útil para que nuestros archivos se comuniquen
+        // ===============================================================
+        // ¡¡¡IMPORTANTE!!! 
+        // 3. ASEGÚRATE DE AÑADIR 'signOut' A 'window.firebaseTools'
+        // ===============================================================
         window.firebaseTools = {
             app: app,
             getAuth: getAuth,
             signInWithEmailAndPassword: signInWithEmailAndPassword,
+            signOut: signOut, // <-- ESTA LÍNEA ES CRUCIAL
             getFirestore: getFirestore
         };
     </script>

@@ -5,14 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- 1. OBTENER LAS HERRAMIENTAS DE FIREBASE ---
     // Tomamos las herramientas que "globalizamos" en el index.html
-    const { app, getAuth, signInWithEmailAndPassword } = window.firebaseTools;
+    const { app, getAuth, signInWithEmailAndPassword, signOut } = window.firebaseTools;
 
     // --- 2. "ATAJOS" A LOS ELEMENTOS DEL HTML ---
     // Guardamos en variables los elementos que vamos a necesitar manipular
     const loginForm = document.getElementById('login-form');
     const loginView = document.getElementById('login-view');
     const appContainer = document.getElementById('app-container');
-    const loginError = document.getElementById('login-error'); // El div de error que creamos
+    const loginError = document.getElementById('login-error'); // El div de error
+    const logoutButton = document.getElementById('logout-button'); // ¡El nuevo botón!
 
     // --- 3. INICIALIZAR EL SERVICIO DE AUTENTICACIÓN ---
     // Le decimos a Firebase: "Quiero usar tu servicio de Autenticación"
@@ -34,8 +35,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     // --- 5. EL "INTERRUPTOR" DEL LOGIN ---
-    // Esto es un "oyente de eventos". Le decimos:
-    // "Oye, cuando alguien intente 'enviar' (submit) el formulario 'login-form'..."
+    // ... (cuando alguien intente 'enviar' (submit) el formulario 'login-form'...)
     if (loginForm) {
         loginForm.addEventListener('submit', async (e) => {
             // 'e.preventDefault()' es MUY importante.
@@ -83,4 +83,25 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- 8. EL "INTERRUPTOR" DEL LOGOUT (CERRAR SESIÓN) ---
+    // Esta es la nueva sección que hace que el botón funcione.
+    if (logoutButton) {
+        // Le decimos: "Oye, cuando alguien haga 'click' en el 'logoutButton'..."
+        logoutButton.addEventListener('click', async () => {
+            console.log('Cerrando sesión...');
+            try {
+                // Le decimos a Firebase: "Cierra la sesión del usuario actual"
+                await signOut(auth);
+                
+                // Enviamos al usuario de vuelta a la pantalla de login
+                switchView('login-view');
+
+            } catch (error) {
+                // Si hay algún error al cerrar sesión
+                console.error('Error al cerrar sesión:', error);
+            }
+        });
+    }
+
 });
+
