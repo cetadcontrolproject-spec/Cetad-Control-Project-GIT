@@ -1,11 +1,21 @@
 body {
+    /* Establece la fuente para toda la página */
     font-family: 'Inter', sans-serif;
 }
 
+/* 1. Oculta TODAS las vistas principales por defecto */
 .app-view {
-    display: none; /* Oculta todas las vistas por defecto */
+    display: none; 
 }
 
-.active-view {
-    display: block; /* Muestra solo la vista que tenga esta clase */
+/* 2. Muestra el LOGIN como 'flex' para poder centrarlo */
+/* Solo se aplica si el elemento tiene 'app-view' y 'active-view' */
+#login-view.active-view {
+    display: flex;
+}
+
+/* 3. Muestra el PANEL DE LA APP como 'flex' para el layout */
+/* Solo se aplica si el elemento tiene 'app-view' y 'active-view' */
+#app-container.active-view {
+    display: flex;
 }

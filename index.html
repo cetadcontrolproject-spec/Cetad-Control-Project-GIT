@@ -5,53 +5,86 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sistema Clínico CETAD - Prototipo</title>
     
+    <!-- Cargando el kit de diseño TailwindCSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Cargando la fuente 'Inter' de Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Enlazando nuestra hoja de estilos personalizada -->
     <link rel="stylesheet" href="css/style.css">
+
+    <!-- =================================================== -->
+    <!-- REGLAS DE CSS CRÍTICAS PARA EL CAMBIO DE VISTA -->
+    <!-- Las ponemos aquí para garantizar que siempre se carguen -->
+    <!-- =================================================== -->
+    <style>
+        body {
+            /* Establece la fuente para toda la página */
+            font-family: 'Inter', sans-serif;
+        }
+
+        /* 1. Oculta TODAS las vistas principales por defecto */
+        .app-view {
+            display: none; 
+        }
+
+        /* 2. Muestra el LOGIN como 'flex' para poder centrarlo */
+        /* Solo se aplica si el elemento tiene 'app-view' y 'active-view' */
+        #login-view.active-view {
+            display: flex;
+        }
+
+        /* 3. Muestra el PANEL DE LA APP como 'flex' para el layout */
+        /* Solo se aplica si el elemento tiene 'app-view' y 'active-view' */
+        #app-container.active-view {
+            display: flex;
+        }
+    </style>
 
 </head>
 <body class="bg-gray-100 text-gray-800">
 
+    <!-- Pantalla de Login -->
+    <!-- Esta es la 'Vista 1'. Tiene 'active-view' para ser visible al inicio -->
     <div id="login-view" class="app-view active-view flex items-center justify-center h-screen bg-gray-200">
         <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
-
-            <!-- formulario de login -->
             
+            <!-- Encabezado del formulario -->
             <div>
-                <!-- cuadro de formulario -->
-                <h2 class="text-3xl font-bold text-center text-black-600"> Sistema CETAD CONTROL </h2>
-                <p class="margin-top-2 text-sm text-center text-gray-600"> Prototipo FCI-045 2023 </p>
+                <h2 class="text-3xl font-bold text-center text-gray-900">Sistema Clínico CETAD</h2>
+                <p class="mt-2 text-center text-sm text-gray-600">Prototipo FCI-045 2023</p>
             </div>
 
-                <!-- inicio del formulario -->
-                <form id="login-form margin-8 space-y-6">
-                            <!-- para escribir correo -->
-                    <div class="rounded-md shadow-sm space-y-px">
-                        <div>
-                            <input name="correo" type="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="medico@cetad.com">
-                        </div>
-                        <!-- para escribir contraseñá -->
-                        <div>
-                            <input name="contraseña" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Contraseña">
-                        </div>
+            <!-- Formulario -->
+            <form id="login-form" class="mt-8 space-y-6">
+                <div class="rounded-md shadow-sm -space-y-px">
+                    <div>
+                        <input name="email" type="email" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Usuario (ej: medico@cetad.com)">
                     </div>
+                    <div>
+                        <input name="password" type="password" required class="appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm" placeholder="Contraseña">
+                    </div>
+                </div>
 
-                        <!-- boton enviar -->
-                     <div class="flex justify-center">
-                        <button type="submit" class="mt-4 group relative max-w-md flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-black bg-blue-200 hover:bg-blue-400">
-                        Iniciar Sesión </button>
-                     </div>
-                </form>
+                <!-- Aquí se mostrarán los errores de login -->
+                <div id="login-error" class="text-red-600 text-sm text-center hidden"></div>
+
+                <div>
+                    <button type="submit" class="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700">
+                        Iniciar Sesión
+                    </button>
+                </div>
+            </form>
+
         </div>
     </div>
 
-
-        <!-- contenedor de la aplicación -->
-
-    <div id="app container" class="app-view flex h-screen bd-gray-200">
-
-         <!-- menú lateral -->
-<div id="sidebar" class="w-64 bg-gray-800 text-white flex flex-col">
+    <!-- Contenedor Principal de la App (inicialmente oculto) -->
+    <!-- Esta es la 'Vista 2'. Solo tiene 'app-view' para estar oculta al inicio -->
+    <div id="app-container" class="app-view flex h-screen bg-gray-200">
+        <!-- Sidebar (Menú Lateral) -->
+        <div id="sidebar" class="w-64 bg-gray-800 text-white flex flex-col">
             <div class="px-4 py-6">
                 <h2 class="text-xl font-semibold">CETAD System</h2>
             </div>
@@ -72,11 +105,53 @@
         </main>
     </div>
 
+    <!-- =================================================== -->
+    <!-- CONEXIÓN CON FIREBASE (SECCIÓN CRÍTICA) -->
+    <!-- =================================================== -->
+
+    <!-- Este es el "paquete" principal de Firebase -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
     
+    <!-- Este es el "paquete" para la Autenticación (login) -->
+    <script type="module"src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
 
-    <!-- Aquí escribiremos la estructura de nuestra aplicación -->
+    <!-- Este es el "paquete" para la Base de Datos (Firestore) -->
+    <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js"></script>
 
-    <!-- Al final siempre irá el enlace a nuestro JavaScript -->
+    <!-- Este script inicializa la conexión con TU proyecto -->
+    <script type="module">
+        // Importa la función de inicialización
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+        // Importa las funciones que necesitaremos
+        import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+        // Import the functions you need from the SDKs you need
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyAUZ2I2HnxFvrS3i7S-aezaYRJNk_GqMag",
+  authDomain: "sistema-cetad-fci045.firebaseapp.com",
+  projectId: "sistema-cetad-fci045",
+  storageBucket: "sistema-cetad-fci045.firebasestorage.app",
+  messagingSenderId: "13194984349",
+  appId: "1:13194984349:web:7db6926f4bf93857b8cd74"
+};
+
+// Initialize Firebase
+const app = initializeApp(firebaseConfig);
+
+        // Hacemos las herramientas de Firebase "globales" para que main.js las vea
+        // Esto es un atajo útil para que nuestros archivos se comuniquen
+        window.firebaseTools = {
+            app: app,
+            getAuth: getAuth,
+            signInWithEmailAndPassword: signInWithEmailAndPassword,
+            getFirestore: getFirestore
+        };
+    </script>
+
+    <!-- Al final siempre irá el enlace a nuestro JavaScript (el cerebro) -->
     <script src="js/main.js"></script>
 </body>
 </html>
