@@ -18,6 +18,7 @@
 <body class="bg-gray-100 text-gray-800">
 
     <!-- Pantalla de Login -->
+    <!-- NOTA: No tiene la clase 'flex' para que el CSS la controle -->
     <div id="login-view" class="app-view active-view items-center justify-center h-screen bg-gray-200">
         <div class="w-full max-w-md p-8 space-y-8 bg-white rounded-xl shadow-lg">
             
@@ -41,7 +42,7 @@
                 <!-- Aquí se mostrarán los errores de login -->
                 <div id="login-error" class="text-red-600 text-sm text-center hidden"></div>
 
-                <!-- boton enviar (TU CÓDIGO ACTUALIZADO) -->
+                <!-- boton enviar -->
                 <div class="flex justify-center">
                     <button type="submit" class="mt-4 group relative max-w-md flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-lg text-black bg-blue-200 hover:bg-blue-400">
                     Iniciar Sesión </button>
@@ -52,42 +53,177 @@
     </div>
 
     <!-- Contenido Principal de la App (inicialmente oculto) -->
+    <!-- NOTA: No tiene la clase 'flex' para que el CSS la controle -->
     <div id="app-container" class="app-view h-screen bg-gray-200">
         <!-- Sidebar (Menú Lateral) -->
-        <div id="sidebar" class="w-64 bg-gray-800 text-white flex flex-col">
+        <div id="sidebar" class="w-64 bg-gray-800 text-white flex flex-col shadow-lg">
             <div class="px-4 py-6">
                 <h2 class="text-xl font-semibold">CETAD System</h2>
             </div>
+            <!-- Navegación principal -->
             <nav id="sidebar-nav" class="flex-1 px-2 space-y-1">
-                <a href="#" class="block px-4 py-2 rounded-md bg-gray-900">Dashboard</a>
-                <a href="#" class="block px-4 py-2 rounded-md hover:bg-gray-700">Pacientes</a>
-                <a href="#" class="block px-4 py-2 rounded-md hover:bg-gray-700">Asistente IA</a>
+                <!-- Usamos 'data-view' para que JavaScript sepa qué vista mostrar -->
+                <a href="#" data-view="dashboard-view" class="flex items-center gap-3 px-4 py-2 rounded-md bg-gray-900 hover:bg-gray-700">
+                    <!-- Icono de Dashboard (Heroicons) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M10.707 2.293a1 1 0 00-1.414 0l-7 7a1 1 0 001.414 1.414L4 10.414V17a1 1 0 001 1h2a1 1 0 001-1v-2a1 1 0 011-1h2a1 1 0 011 1v2a1 1 0 001 1h2a1 1 0 001-1v-6.586l.293.293a1 1 0 001.414-1.414l-7-7z" />
+                    </svg>
+                    Dashboard
+                </a>
+                <a href="#" data-view="patients-view" class="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-700">
+                    <!-- Icono de Pacientes (Heroicons) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path d="M9 6a3 3 0 11-6 0 3 3 0 016 0zM17 6a3 3 0 11-6 0 3 3 0 016 0zM12.93 17c.046-.327.07-.66.07-1a6.97 6.97 0 00-1.5-4.33A5 5 0 0110 13v-2.267a5.002 5.002 0 01-1.5-4.33c0-.34.024-.673.07-1H4a2 2 0 00-2 2v6a2 2 0 002 2h8.93zM16 13a5 5 0 01-1.5 3.33V18a2 2 0 002 2h.098c.03.001.06.002.09.002.03 0 .06-.001.09-.002H17a2 2 0 002-2v-2.67c-.509 1-1.223 1.8-2 2.33z" />
+                    </svg>
+                    Pacientes
+                </a>
+                <a href="#" data-view="ai-view" class="flex items-center gap-3 px-4 py-2 rounded-md hover:bg-gray-700">
+                    <!-- Icono de IA (Heroicons) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd" />
+                    </svg>
+                    Asistente IA
+                </a>
             </nav>
         </div>
 
         <!-- Contenido Principal -->
         <main class="flex-1 flex flex-col overflow-hidden">
             
-            <!-- =================================================== -->
-            <!-- AQUÍ ESTÁ EL BOTÓN DE CERRAR SESIÓN -->
-            <!-- =================================================== -->
+            <!-- Encabezado con el botón de CERRAR SESIÓN MINIMALISTA -->
             <header class="bg-white shadow-sm p-4 flex justify-end">
-                <button id="logout-button" class="text-sm font-medium text-white bg-red-600 hover:bg-red-700 px-4 py-2 rounded-md shadow-sm">
-                    Cerrar Sesión
+                <button id="logout-button" class="text-gray-500 hover:text-gray-700 p-2 rounded-full hover:bg-gray-100" title="Cerrar Sesión">
+                    <!-- Icono de Salir (Heroicons) -->
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                    </svg>
                 </button>
             </header>
 
+            <!-- Contenedor para las VISTAS DE CONTENIDO -->
             <div class="flex-1 overflow-x-hidden overflow-y-auto bg-gray-100 p-6">
-                <!-- El contenido de cada vista (Dashboard, Pacientes, etc.) se cargará aquí -->
-                <h1 class="text-3xl font-semibold text-gray-800">Dashboard</h1>
-                <p class="text-gray-600 mt-2">Bienvenido al sistema de control y registro clínico.</p>
+                
+                <!-- VISTA: Dashboard (activa por defecto) -->
+                <div id="dashboard-view" class="content-view active-content-view">
+                    <h1 class="text-3xl font-semibold text-gray-800">Dashboard</h1>
+                    <p class="text-gray-600 mt-2">Bienvenido al sistema de control y registro clínico.</p>
+
+                    <!-- Cuadrícula de Estadísticas (KPIs) -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
+                        <!-- Card: Pacientes Activos -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg">
+                            <div class="flex items-center gap-4">
+                                <div class="p-3 bg-blue-100 rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-blue-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-2.377M12 20H4v-2a3 3 0 015.356-2.377M12 12a3 3 0 100-6 3 3 0 000 6z" /></svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">Pacientes Activos</p>
+                                    <p class="text-2xl font-bold text-gray-900">14</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card: Alerta BCI -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg">
+                            <div class="flex items-center gap-4">
+                                <div class="p-3 bg-red-100 rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-red-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" /></svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">Nivel de Alerta BCI (Promedio)</p>
+                                    <p class="text-2xl font-bold text-gray-900">Alto (7.8)</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Card: Sesiones del Mes -->
+                        <div class="bg-white p-6 rounded-xl shadow-lg">
+                            <div class="flex items-center gap-4">
+                                <div class="p-3 bg-green-100 rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-green-600" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" /></svg>
+                                </div>
+                                <div>
+                                    <p class="text-sm font-medium text-gray-500">Sesiones Este Mes</p>
+                                    <p class="text-2xl font-bold text-gray-900">42</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Placeholder para Gráficos -->
+                    <div class="bg-white p-6 rounded-xl shadow-lg mt-6">
+                        <h3 class="text-lg font-semibold text-gray-900">Actividad Neuronal (Promedio de Pacientes)</h3>
+                        <div class="h-64 mt-4 bg-gray-200 rounded flex items-center justify-center">
+                            <p class="text-gray-500">Aquí iría un gráfico BCI (ej: Chart.js)</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- VISTA: Pacientes (oculta por defecto) -->
+                <div id="patients-view" class="content-view">
+                    <h1 class="text-3xl font-semibold text-gray-800">Gestión de Pacientes</h1>
+                    
+                    <div class="flex justify-end mt-4">
+                        <button class="flex items-center gap-2 bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-4 rounded-lg shadow-sm">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M10 3a1 1 0 011 1v5h5a1 1 0 110 2h-5v5a1 1 0 11-2 0v-5H4a1 1 0 110-2h5V4a1 1 0 011-1z" clip-rule="evenodd" /></svg>
+                            Agregar Paciente
+                        </button>
+                    </div>
+
+                    <!-- Tabla de Pacientes -->
+                    <div class="bg-white rounded-xl shadow-lg mt-6 overflow-hidden">
+                        <table class="w-full">
+                            <thead class="bg-gray-50">
+                                <tr>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nombre</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Diagnóstico</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Fecha de Ingreso</th>
+                                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Acciones</th>
+                                </tr>
+                            </thead>
+                            <tbody id="patient-table-body" class="bg-white divide-y divide-gray-200">
+                                <!-- Filas de pacientes se insertarán aquí por JS -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- VISTA: Asistente IA (oculta por defecto) -->
+                <div id="ai-view" class="content-view">
+                    <h1 class="text-3xl font-semibold text-gray-800">Asistente Clínico IA</h1>
+                    <p class="text-gray-600 mt-2">Realiza consultas sobre pacientes o datos BCI.</p>
+
+                    <div class="flex flex-col h-[70vh] bg-white rounded-xl shadow-lg mt-6">
+                        <!-- Ventana de Chat -->
+                        <div id="chat-window" class="flex-1 p-6 overflow-y-auto space-y-4">
+                            <!-- Mensaje de Bienvenida -->
+                            <div class="flex items-start gap-3">
+                                <div class="p-2 bg-indigo-100 rounded-full">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-indigo-600" viewBox="0 0 20 20" fill="currentColor"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd" /></svg>
+                                </div>
+                                <div class="bg-gray-100 p-3 rounded-lg max-w-lg">
+                                    <p class="text-sm text-gray-800">Hola, soy el asistente clínico. ¿Cómo puedo ayudarte hoy? Puedes preguntar sobre un plan de tratamiento o un análisis de datos BCI.</p>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Formulario de Envío -->
+                        <form id="ai-form" class="border-t border-gray-200 p-4 bg-white rounded-b-xl">
+                            <div class="flex items-center gap-3">
+                                <input type="text" id="ai-input" placeholder="Escribe tu consulta..." class="flex-1 w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-indigo-500">
+                                <button type="submit" class="p-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg shadow-sm">
+                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" /></svg>
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+
+                </div>
+
             </div>
         </main>
     </div>
 
     <!-- =================================================== -->
     <!-- CONEXIÓN CON FIREBASE (SECCIÓN CRÍTICA) -->
-    <!-- =================================================== -->
+    <!-- =impares ================================================= -->
 
     <script type="module" src="https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js"></script>
     <script type="module"src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js"></script>
@@ -97,17 +233,22 @@
         import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
         
         // ===============================================================
-        // ¡¡¡IMPORTANTE!!! 
-        // 1. ASEGÚRATE DE IMPORTAR 'signOut' AQUÍ
+        // ¡¡¡AQUÍ ESTÁ LA CORRECCIÓN!!!
+        // Asegúrate de importar 'signOut'
         // ===============================================================
         import { getAuth, signInWithEmailAndPassword, signOut } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
+        
+        // ===============================================================
+        // ¡¡¡AQUÍ ESTÁ LA OTRA CORRECCIÓN!!!
+        // Se elimina el '_from'
+        // ===============================================================
         import { getFirestore } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
         // ===============================================================
         // ¡¡¡IMPORTANTE!!! 
-        // 2. PEGA TU CÓDIGO DE CONFIGURACIÓN DE FIREBASE AQUÍ
-        // ===============================================================
-        const firebaseConfig = {
+        // 1. PEGA TU CÓDIGO DE CONFIGURACIÓN DE FIREBASE AQUÍ
+        // =================================G==============================
+      const firebaseConfig = {
   apiKey: "AIzaSyAUZ2I2HnxFvrS3i7S-aezaYRJNk_GqMag",
   authDomain: "sistema-cetad-fci045.firebaseapp.com",
   projectId: "sistema-cetad-fci045",
@@ -118,16 +259,16 @@
       
         // Inicializa Firebase
         const app = initializeApp(firebaseConfig);
-
+      
         // ===============================================================
-        // ¡¡¡IMPORTANTE!!! 
-        // 3. ASEGÚRATE DE AÑADIR 'signOut' A 'window.firebaseTools'
+        // ¡¡¡AQUÍ ESTÁ LA OTRA PARTE DE LA CORRECCIÓN!!!
+        // Asegúrate de 'exportar' signOut a window.firebaseTools
         // ===============================================================
         window.firebaseTools = {
             app: app,
             getAuth: getAuth,
             signInWithEmailAndPassword: signInWithEmailAndPassword,
-            signOut: signOut, // <-- ESTA LÍNEA ES CRUCIAL
+            signOut: signOut, 
             getFirestore: getFirestore
         };
     </script>

@@ -1,21 +1,61 @@
 body {
-    /* Establece la fuente para toda la página */
     font-family: 'Inter', sans-serif;
 }
 
-/* 1. Oculta TODAS las vistas principales por defecto */
+/* ================================== */
+/* --- LÓGICA DE VISTAS PRINCIPAL --- */
+/* ================================== */
+
+/* Oculta las vistas principales (Login y App) por defecto */
 .app-view {
-    display: none; 
+    display: none;
 }
 
-/* 2. Muestra el LOGIN como 'flex' para poder centrarlo */
-/* Solo se aplica si el elemento tiene 'app-view' y 'active-view' */
+/* Muestra la vista de LOGIN activa como flex (para centrar) */
 #login-view.active-view {
     display: flex;
 }
 
-/* 3. Muestra el PANEL DE LA APP como 'flex' para el layout */
-/* Solo se aplica si el elemento tiene 'app-view' y 'active-view' */
+/* Muestra la vista de APP activa como flex (para el sidebar) */
 #app-container.active-view {
     display: flex;
 }
+
+
+/* ===================================== */
+/* --- LÓGICA DE VISTAS DE CONTENIDO --- */
+/* ===================================== */
+
+/* Oculta las vistas de contenido (Dashboard, Pacientes, IA) por defecto */
+.content-view {
+    display: none;
+}
+
+/* Muestra la vista de contenido activa como bloque */
+.content-view.active-content-view {
+    display: block;
+}
+
+/* ===================================== */
+/* --- ESTILOS DEL CHAT DE IA --- */
+/* ===================================== */
+
+/* Estilos para el scrollbar del chat (WebKit browsers) */
+#chat-window::-webkit-scrollbar {
+    width: 6px;
+}
+
+#chat-window::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 10px;
+}
+
+#chat-window::-webkit-scrollbar-thumb {
+    background: #ccc;
+    border-radius: 10px;
+}
+
+#chat-window::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
+
